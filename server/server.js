@@ -13,7 +13,9 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(express.urlencoded({ extended : "true"}));
-app.use(cors())
+app.use(cors({
+   origin: process.env.FRONTEND_URL || true,
+}))
 
 app.get("/", (req,res)=>{
    res.send("Server is working!")

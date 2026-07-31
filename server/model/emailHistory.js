@@ -28,7 +28,7 @@ const EmailHistorySchema = new mongoose.Schema({
         required: true
     },
 
-})
+}, { timestamps: true })
 
 const EmailHistory = mongoose.model('EmailHistory', EmailHistorySchema)
 export default EmailHistory

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import api from '../utils/api';
-import { ClipboardDocumentIcon, CheckIcon, SparklesIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { ClipboardDocumentIcon, CheckIcon, SparklesIcon, PaperAirplaneIcon, ArrowRightOnRectangleIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const glass = {
     background: 'rgba(15,23,42,0.75)',
@@ -19,6 +21,25 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [copied, setCopied] = useState('');
+    const [history, setHistory] = useState([]);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const loadHistory = async () => {
+            try {
+                const { data } = await api.get('/ai/history');
+                setHistory(data);
+            } catch (error) {
+                if (error.response?.status === 401) {
+                    logout();
+                    navigate('/login');
+                }
+            }
+        };
+
+        loadHistory();
+    }, [logout, navigate]);
 
     const handleGenerate = async (e) => {
         e.preventDefault();
@@ -28,12 +49,23 @@ const Dashboard = () => {
         try {
             const { data } = await api.post('/ai/generate-email', { prompt });
             setResult(data);
+            setHistory((previous) => [data, ...previous.filter((item) => item._id !== data._id)]);
             toast.success('Successfully generated!');
         } catch (error) {
             toast.error('Failed to generate. Please try again.');
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    const openHistory = (item) => {
+        setPrompt(item.prompt);
+        setResult(item);
     };
 
     const copyToClipboard = (text, type) => {
@@ -101,6 +133,17 @@ const Dashboard = () => {
                     <span className="text-lg font-semibold tracking-tight">
                         MailForge <span className="text-[#4F7CFF]">AI</span>
                     </span>
+                    <div className="ml-auto flex items-center gap-4">
+                        <span className="hidden sm:block text-sm text-[#B6C2E2]">{user?.username || user?.email}</span>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#B6C2E2] transition-colors hover:bg-white/10 hover:text-white"
+                        >
+                            <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                            Logout
+                        </button>
+                    </div>
                 </div>
                 <div className="mb-8">
                     <div
@@ -193,6 +236,37 @@ const Dashboard = () => {
                             </div>
                         )}
                     </div>
+                </div>
+
+                <div className="mt-8 rounded-[24px] p-6" style={glass}>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="flex items-center gap-2 text-sm font-semibold text-white">
+                            <ClockIcon className="h-4 w-4 text-[#8B5CF6]" />
+                            Recent History
+                        </h2>
+                        <span className="text-xs text-[#B6C2E2]">{history.length} campaigns</span>
+                    </div>
+                    {history.length === 0 ? (
+                        <p className="text-sm text-[#B6C2E2]">Your generated campaigns will appear here.</p>
+                    ) : (
+                        <div className="grid gap-3 md:grid-cols-2">
+                            {history.slice(0, 6).map((item) => (
+                                <button
+                                    key={item._id}
+                                    type="button"
+                                    onClick={() => openHistory(item)}
+                                    className="rounded-xl p-4 text-left transition-colors hover:bg-white/[0.08]"
+                                    style={{ background: 'rgba(5,8,22,0.4)', border: '1px solid rgba(255,255,255,0.06)' }}
+                                >
+                                    <p className="truncate text-sm font-medium text-white">{item.subject}</p>
+                                    <p className="mt-1 truncate text-xs text-[#B6C2E2]">{item.prompt}</p>
+                                    <p className="mt-2 text-[11px] text-[#B6C2E2]/60">
+                                        {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'Recently generated'}
+                                    </p>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
