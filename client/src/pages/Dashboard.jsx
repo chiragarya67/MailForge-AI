@@ -96,6 +96,12 @@ const Dashboard = () => {
 
             {/* ---------- Content ---------- */}
             <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 py-10">
+                <div className="flex items-center gap-3 mb-10">
+                    <img src="/logo.png" alt="MailForge AI" className="h-11 w-11 rounded-xl object-cover" />
+                    <span className="text-lg font-semibold tracking-tight">
+                        MailForge <span className="text-[#4F7CFF]">AI</span>
+                    </span>
+                </div>
                 <div className="mb-8">
                     <div
                         className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-[#B6C2E2] mb-4"

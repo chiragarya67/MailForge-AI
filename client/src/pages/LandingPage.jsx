@@ -112,7 +112,7 @@ const LandingPage = () => {
                                 className="flex h-8 w-8 items-center justify-center rounded-lg"
                                 style={{ background: 'linear-gradient(135deg, #4F7CFF, #8B5CF6)' }}
                             >
-                                <SparklesIcon className="h-4.5 w-4.5 text-white" />
+                                <img src="/logo.png" alt="MailForge AI" className="h-8 w-8 rounded-lg object-cover" />
                             </div>
                             <span className="text-lg font-semibold tracking-tight">
                                 MailForge <span className="text-[#4F7CFF]">AI</span>
@@ -383,7 +383,7 @@ const LandingPage = () => {
                             className="flex h-6 w-6 items-center justify-center rounded-md"
                             style={{ background: 'linear-gradient(135deg, #4F7CFF, #8B5CF6)' }}
                         >
-                            <SparklesIcon className="h-3.5 w-3.5 text-white" />
+                            <img src="/logo.png" alt="MailForge AI" className="h-6 w-6 rounded-md object-cover" />
                         </div>
                         <span className="text-sm font-semibold text-white">
                             MailForge <span className="text-[#4F7CFF]">AI</span>

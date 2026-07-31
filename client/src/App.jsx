@@ -16,7 +16,7 @@ function App() {
         <Router>
             <Toaster position="top-right" />
             <Routes>
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" element={user ? <Dashboard /> : <LandingPage />} />
                 <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
                 <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/dashboard" />} />
                 <Route path="/verify-otp" element={<VerifyOtp />} />  

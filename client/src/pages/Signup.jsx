@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import api from '../utils/api';
-import { EyeIcon, EyeSlashIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const glass = {
     background: 'rgba(15,23,42,0.75)',
@@ -77,7 +77,7 @@ const Signup = () => {
                         className="flex h-11 w-11 items-center justify-center rounded-xl mb-5"
                         style={{ background: 'linear-gradient(135deg, #4F7CFF, #8B5CF6)' }}
                     >
-                        <SparklesIcon className="h-5 w-5 text-white" />
+                        <img src="/logo.png" alt="MailForge AI" className="h-11 w-11 rounded-xl object-cover" />
                     </div>
                     <span className="text-lg font-semibold tracking-tight mb-2">
                         MailForge <span className="text-[#4F7CFF]">AI</span>
