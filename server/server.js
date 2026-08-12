@@ -5,6 +5,7 @@ dotenv.config()
 import authRouter from "./routes/authRoutes.js"
 import aiRoutes from './routes/aiRoutes.js'
 import connectDB from "./config/db.js"
+import path from "path"
 
 
 
